@@ -50,9 +50,9 @@ A lightweight Human Resources management API built with FastAPI and SQLAlchemy.
 
 ## Screenshots
 
-| Testing | API ON |
+| Swagger UI | API ON |
 |--------------------|------------------|
-| ![List](assets/HRLite 1.png) | ![Edit](assets/HRLite 2.png) |
+| ![Swagger UI](./assets/HRLite1.png) | ![API](./assets/HRLite2.png) |
 
 
 ## Deployment
