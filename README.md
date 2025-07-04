@@ -23,7 +23,7 @@ A lightweight Human Resources management API built with FastAPI and SQLAlchemy.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/hrlite.git
+   git clone https://github.com/Wilcleyber/HRLite_Backend.git
    cd hrlite/Backend
    ```
 
@@ -48,17 +48,17 @@ A lightweight Human Resources management API built with FastAPI and SQLAlchemy.
 - `PUT /colaboradores/{matricula}` — Edit a collaborator
 - `PATCH /colaboradores/{matricula}/status` — Change collaborator status
 
+## Online Demo
+
+You can test the API live here:  
+👉 **[https://hrlite-api.onrender.com/docs](https://hrlite-api.onrender.com/docs)**
+
 ## Screenshots
 
 | Swagger UI | API ON |
-|--------------------|------------------|
+|------------|--------|
 | ![Swagger UI](./assets/HRLite1.png) | ![API](./assets/HRLite2.png) |
 
-
-## Deployment
-
-- Ready for deployment on [Render](https://render.com/) or similar platforms.
-- For production, configure your database URL in the environment variables.
 
 ## License
 
@@ -66,4 +66,4 @@ MIT License
 
 ---
 
-**Feel free to contribute or open issues!**
+**Feel free to contribute, open issues, or test the API online!**
