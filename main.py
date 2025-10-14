@@ -3,9 +3,18 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from database import criar_tabelas, get_db
 from schemas import ColaboradorCreate, ColaboradorOut, StatusColaborador
+from fastapi.middleware.cors import CORSMiddleware
 import crud
 
 app = FastAPI(title="HRLite API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 criar_tabelas()
 
