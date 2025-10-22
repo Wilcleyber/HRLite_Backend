@@ -4,8 +4,14 @@ from models import ColaboradorBase, StatusColaborador
 from schemas import ColaboradorCreate
 from database import Colaborador, get_db
 from utils import remover_acentos, gerar_matricula
+from fastapi import HTTPException
 
 def criar_colaborador(db: Session, colaborador: ColaboradorCreate):
+    # Verifica se CPF já existe
+    existente = db.query(Colaborador).filter(Colaborador.cpf == colaborador.cpf).first()
+    if existente:
+        raise HTTPException(status_code=400, detail="CPF já cadastrado.")
+
     matricula = gerar_matricula(db)
     db_colab = Colaborador(
         matricula=matricula,
