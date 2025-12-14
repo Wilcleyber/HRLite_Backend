@@ -1,21 +1,27 @@
 import re
 import unicodedata
-from sqlalchemy.orm import Session
 from datetime import datetime
-from database import Colaborador
 
 def validar_cpf(cpf: str) -> bool:
     return bool(re.match(r'^\d{11}$', cpf))
 
-def gerar_matricula(db: Session) -> str:
-    ultimo = db.query(Colaborador).order_by(Colaborador.matricula.desc()).first()
-    if not ultimo or not ultimo.matricula:
-        proximo_num = 1
-    else:
+def gerar_matricula(db) -> str:
+    """Generate next matricula based on in-memory list `db`.
+
+    `db` is expected to be a list of dicts with key 'matricula'.
+    """
+    ultimo_num = 0
+    for item in db:
+        m = item.get('matricula')
+        if not m:
+            continue
         try:
-            proximo_num = int(ultimo.matricula.split('-')[-1]) + 1
+            num = int(m.split('-')[-1])
+            if num > ultimo_num:
+                ultimo_num = num
         except Exception:
-            proximo_num = 1
+            continue
+    proximo_num = ultimo_num + 1
     return f"COL-{proximo_num:03d}"
 
 def parse_date_to_iso(date_str: str) -> str:

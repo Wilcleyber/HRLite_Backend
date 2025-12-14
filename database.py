@@ -1,37 +1,29 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, Enum
-from sqlalchemy.orm import sessionmaker, declarative_base
-import os
+from typing import Iterator, List, Dict
 from models import StatusColaborador
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+# In-memory storage: a list of collaborator dicts
+COLABORADORES: List[Dict] = []
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
-)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-class Colaborador(Base):
-    __tablename__ = "colaboradores"
-
-    matricula = Column(String, primary_key=True, unique=True, index=True, nullable=False)
-    nome = Column(String, nullable=False)
-    cpf = Column(String, unique=True, nullable=False)
-    data_nascimento = Column(String, nullable=False)
-    telefone = Column(String, nullable=False)
-    endereco = Column(String, nullable=False)
-    cargo = Column(String, nullable=False)
-    salario = Column(Float, nullable=False)
-    status = Column(Enum(StatusColaborador), default=StatusColaborador.ATIVO, nullable=False)
+def get_db() -> Iterator[List[Dict]]:
+    """Dependency replacement: yields the in-memory list acting as the database."""
+    yield COLABORADORES
 
 def criar_tabelas():
-    Base.metadata.create_all(bind=engine)
+    """No-op initializer for compatibility with existing startup code.
+
+    Also ensures a default example collaborator exists so it remains present
+    while the API process is running.
+    """
+    if not COLABORADORES:
+        exemplo = {
+            "matricula": "COL-001",
+            "nome": "Exemplo Usuario",
+            "cpf": "00000000000",
+            "data_nascimento": "1990-01-01",
+            "telefone": "(00) 00000-0000",
+            "endereco": "Endereco Exemplo, 1",
+            "cargo": "Exemplo",
+            "salario": 0.0,
+            "status": StatusColaborador.ATIVO.value
+        }
+        COLABORADORES.append(exemplo)
